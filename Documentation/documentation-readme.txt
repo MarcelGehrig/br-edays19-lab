@@ -125,9 +125,10 @@ Absteichern neue default config
 make update-defconfig
 
 
+git commit -m "end of LAB1"
 
-
-
+git tag -a lab1_end -m "2019.07.03 end of LAB1"
+git push origin --tags
 
 
 
