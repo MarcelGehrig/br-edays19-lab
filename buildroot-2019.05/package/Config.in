@@ -11,7 +11,6 @@ menu "Target packages"
 
 menu "Noser E-Days"
     source "package/tftpd/Config.in"
-    source "package/hello-noser/Config.in"
 endmenu
 
 menu "Audio and video applications"
