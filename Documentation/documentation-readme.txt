@@ -132,6 +132,102 @@ git push origin --tags
 
 
 
+git tag -a lab2_start -m "2019.07.04 ready for LAB2"
+git push origin --tags
+
+git tag -a lab2_end -m "2019.07.04 end of LAB2"
+git push origin --tags
+
+
+git tag -a lab3_start -m "2019.07.04 ready for LAB3"
+git push origin --tags
+
+
+package/hello-noser
+
+package/hello-noser/hello-noser.cpp
+#include <iostream>
+
+int main()
+{
+    std::cout << "Hello Noser!\n";
+    return 0;
+}
+
+package/hello-noser/CMakeLists.txt
+
+cmake_minimum_required(VERSION 2.4)
+
+project(hello_noser)
+
+add_executable(hello-noser.cpp)
+
+
+package/Config.in:
+
+menu "Noser E-Days"
+    source "package/tftpd/Config.in"
+	source "package/hello-noser/Config.in"
+endmenu
+
+
+package/hello-noser/Config.in:
+
+config BR2_PACKAGE_HELLO_NOSER
+    bool "hello_noser"
+    help
+        Hello Noser package.
+
+        http://www.noser.com
+
+
+
+package/hello/hello-noser.mk:
+
+
+################################################################################
+#
+# hello
+#
+################################################################################
+
+HELLO_VERSION = 1.0
+HELLO_SITE = ./package/hello/src
+HELLO_SITE_METHOD = local
+
+define HELLO_BUILD_CMDS
+    $(MAKE) CC="$(TARGET_CC)" LD="$(TARGET_LD)" -C $(@D)
+endef
+
+define HELLO_INSTALL_TARGET_CMDS
+    $(INSTALL) -D -m 0755 $(@D)/hello $(TARGET_DIR)/usr/bin
+endef
+
+$(eval $(generic-package))
+
+
+
+
+
+make hello-noser-dirclean && make hello-noser
+
+qemu-system-arm \
+  -M versatilepb \
+  -kernel output/images/zImage \
+  -dtb output/images/versatile-pb.dtb \
+  -drive file=output/images/rootfs.ext4,if=scsi,format=raw \
+  -append "root=/dev/sda console=ttyAMA0,115200" \
+  -serial stdio \
+  -net nic,model=rtl8139 -net user \
+  -redir tcp:2222::22 \
+  -redir udp:2223::69 \
+  -name Versatile_ARM_EXT2
+
+# hello-noser 
+Hello Noser :-)
+# 
+
+hello-noser.mk
 
 
 
