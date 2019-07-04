@@ -1,6 +1,0 @@
-config BR2_PACKAGE_HELLO_NOSER
-    bool "hello_noser"
-    help
-        Hello Noser package.
-
-        http://www.noser.com
