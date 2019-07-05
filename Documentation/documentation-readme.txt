@@ -248,8 +248,46 @@ make BR2_EXTERNAL=/work/br-edays19-lab/noser-external hello-noser
 https://gist.github.com/sbourdelin/9668e8d3071cdbc4f81c
 
 
-make BR2_EXTERNAL=/work/br-edays19-lab/noser-external noser_defconfig
-make BR2_EXTERNAL=/work/br-edays19-lab/noser-external menuconfig
+make BR2_EXTERNAL=../noser-external noser_defconfig
+make BR2_EXTERNAL=../noser-external menuconfig
+
+
+├── board
+│   └── noser
+│       └── qemu_arm_versatile
+│           ├── patches
+│           └── rootfs_overlay
+│               └── etc
+├── Config.in
+├── configs
+│   └── noser_defconfig
+├── external.desc
+├── external.mk
+├── package
+│   ├── hello-noser
+│   │   ├── Config.in
+│   │   ├── hello-noser.mk
+│   │   └── src
+│   │       ├── CMakeLists.txt
+│   │       └── hello-noser.c
+│   └── hello-noser2
+│       ├── Config.in
+│       ├── hello-noser2.mk
+│       └── src
+│           ├── hello-noser2.c
+│           └── Makefile
+└── patches
+    └── libunwind
+        └── 0001-libunwind-fPIC.patch
+
+14 directories, 13 files
+
+make BR2_EXTERNAL=../noser-external update-defconfig
+
+
+
+git tag -a lab4_end -m "2019.07.05 end of LAB4"
+git push origin --tags
 
 
 
