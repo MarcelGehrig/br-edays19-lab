@@ -1,0 +1,1 @@
+source "$BR2_EXTERNAL_NOSER_PATH/package/hello-noser/Config.in"

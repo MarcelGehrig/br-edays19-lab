@@ -230,5 +230,28 @@ Hello Noser :-)
 hello-noser.mk
 
 
+git tag -a lab4_start -m "2019.07.04 ready for LAB4"
+git push origin --tags
+
+
+git tag -a -f lab4_start d30f789
+git push --tags --force
+
+make BR2_EXTERNAL=../noser-external menuconfig
+
+make BR2_EXTERNAL=../noser-external hello-noser-dirclean
+
+make BR2_EXTERNAL=/work/br-edays19-lab/noser-external hello-noser
+
+
+
+https://gist.github.com/sbourdelin/9668e8d3071cdbc4f81c
+
+
+make BR2_EXTERNAL=/work/br-edays19-lab/noser-external noser_defconfig
+make BR2_EXTERNAL=/work/br-edays19-lab/noser-external menuconfig
+
+
+
 
 

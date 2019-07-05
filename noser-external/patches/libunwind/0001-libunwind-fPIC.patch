@@ -1,0 +1,10 @@
+--- libunwind-1.1.org/configure.ac	2017-06-23 12:53:33.822417414 +0200
++++ libunwind-1.1/configure.ac	2017-06-23 12:54:40.498417656 +0200
+@@ -292,7 +292,7 @@
+ #endif]])],[intel_compiler=yes],[intel_compiler=no])
+ 
+ if test x$GCC = xyes -a x$intel_compiler != xyes; then
+-  CFLAGS="${CFLAGS} -fexceptions -Wall -Wsign-compare"
++  CFLAGS="${CFLAGS} -fPIC -fexceptions -Wall -Wsign-compare"
+ fi
+ AC_MSG_RESULT([$intel_compiler])
