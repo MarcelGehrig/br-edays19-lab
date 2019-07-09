@@ -1,1 +1,2 @@
 source "$BR2_EXTERNAL_NOSER_PATH/package/hello-noser/Config.in"
+source "$BR2_EXTERNAL_NOSER_PATH/package/hello-noser2/Config.in"

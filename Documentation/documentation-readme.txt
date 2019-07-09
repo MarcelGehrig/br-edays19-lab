@@ -290,6 +290,20 @@ git tag -a lab4_end -m "2019.07.05 end of LAB4"
 git push origin --tags
 
 
+git tag -a -f lab4_end 3df3257
+git push --tags --force
+
+
+
+git tag -a lab5_start -m "2019.07.05 ready for LAB5"
+git push origin --tags
+
+
+git commit -m "end of LAB5" .
+git tag -a lab5_end -m "2019.07.09 end of LAB5"
+git push origin --tags
+
+
 
 
 
