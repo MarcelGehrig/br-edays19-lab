@@ -1,3 +1,200 @@
+VM Install
+
+password br-edays
+
+
+sudo apt-get update
+
+
+
+sudo vmware-toolbox-cmd disk shrink /
+
+
+sudo apt-get install open-vm-tools-desktop
+
+
+sudo apt-get install git rpm build-essential pigz mc wireshark kdiff3-qt meld filezilla libncurses5-dev cmake make autoconf libtool automake pkg-config texinfo bison flex tree dos2unix putty gedit autogen tree doxygen genext2fs nfs-kernel-server bridge-utils uml-utilities qemu-system-arm qemu-kvm graphviz chrpath picocom moreutils
+
+
+
+SUDO without a password
+Reference: https://mintguide.org/other/355-how-to-make-sudo-without-a-password-on-linux-mint.html
+sudo visudo
+Find the line
+# See sudoers(5) for more information on "#include" directives:
+add below:
+br-edays ALL=(ALL) NOPASSWD: ALL
+
+
+
+
+
+
+
+
+
+
+git clone https://github.com/schenkmi/br-edays19-lab.git
+
+
+
+
+NFS Boot
+
+
+mkdir ~/rootfs
+
+/etc/exports
+/home/br-edays/rootfs *(rw,sync,no_subtree_check,no_root_squash,insecure)
+
+sudo /etc/init.d/nfs-kernel-server restart
+
+Test mit
+sudo exportfs -av
+
+
+
+    Filesystem images  --->     
+│ │     [*] tar the root filesystem                                                │ │  
+  │ │           Compression method (gzip)  --->                                      │ │  
+
+
+
+cd ~/rootfs/
+tar xzvf /home/br-edays/br-edays19-lab/buildroot-2019.05/output/images/rootfs.tar.gz
+
+
+
+
+qemu-system-arm -M versatilepb -m 128M -kernel zImage -append "root=/dev/nfs nfsroot=10.0.2.2:/srv/nfs/_install rw ip=10.0.2.15::10.0.2.1:255.255.255.0 init=/sbin/init"
+
+
+
+
+qemu-system-arm \
+  -M versatilepb \
+  -kernel output/images/zImage \
+  -dtb output/images/versatile-pb.dtb \
+  -append "root=/dev/nfs nfsroot=10.0.2.2:/home/br-edays/rootfs rw console=ttyAMA0,115200" \
+  -serial stdio \
+  -netdev user,id=ethernet.0,hostfwd=tcp::2222-:22,hostfwd=tcp::2223-:69 \
+  -device rtl8139,netdev=ethernet.0 \
+  -name Versatile_ARM_EXT2
+
+
+qemu-system-x86_64 -enable-kvm -initrd /qemuChroot/boot/initrd.img-3.2.0-2-amd64 -kernel /qemuChroot/boot/vmlinuz-3.2.0-2-amd64 -append "root=/dev/nfs nfsroot=10.0.2.2:/qemuChroot" -netdev type=user,id=usernet -device netdev=usernet,driver=virtio-net
+
+
+qemu-system-x86_64 -enable-kvm -initrd /qemuChroot/boot/initrd.img-3.2.0-2-amd64 -kernel /qemuChroot/boot/vmlinuz-3.2.0-2-amd64 -append "root=/dev/nfs nfsroot=10.0.2.2:/qemuChroot" -netdev type=user,id=usernet -device netdev=usernet,driver=virtio-net
+
+
+
+qemu-system-arm \
+  -M versatilepb \
+  -kernel output/images/zImage \
+  -dtb output/images/versatile-pb.dtb \
+  -append "root=/dev/nfs nfsroot=10.0.2.3:/home/br-edays/rootfs rw init=/sbin/init console=ttyAMA0,115200" \
+  -serial stdio \
+  -netdev type=user,id=usernet -device netdev=usernet,driver=virtio-net \
+  -name Versatile_ARM_EXT2
+
+
+
+qemu-system-arm \
+  -M versatilepb \
+  -kernel output/images/zImage \
+  -dtb output/images/versatile-pb.dtb \
+  -append "root=/dev/nfs nfsroot=10.0.2.2:/home/br-edays/rootfs rw ip=10.0.2.15::10.0.2.1:255.255.255.0 init=/sbin/initconsole=ttyAMA0,115200" \
+  -serial stdio \
+  -netdev type=user,id=usernet -device netdev=usernet,driver=virtio-net \
+  -name Versatile_ARM_EXT2
+
+
+
+qemu-system-arm -M versatilepb -m 128M -kernel zImage -append "root=/dev/nfs nfsroot=10.0.2.2:/srv/nfs/_install rw ip=10.0.2.15::10.0.2.1:255.255.255.0 init=/sbin/init"
+
+
+qemu-system-arm \
+  -M versatilepb \
+  -kernel output/images/zImage \
+  -dtb output/images/versatile-pb.dtb \
+  -append "root=/dev/nfs nfsroot=10.0.2.2:/home/br-edays/rootfs rw ip=10.0.2.15::10.0.2.1:255.255.255.0 init=/sbin/init console=ttyAMA0,115200" \
+  -serial stdio \
+  -name Versatile_ARM_EXT2
+
+qemu-system-arm \
+  -M versatilepb \
+  -kernel output/images/zImage \
+  -dtb output/images/versatile-pb.dtb \
+  -append "root=/dev/nfs nfsroot=10.0.2.2:/home/br-edays/rootfs rw ip=10.0.2.15::10.0.2.1:255.255.255.0 init=/sbin/init console=ttyAMA0,115200 nfsdebug" \
+  -serial stdio \
+  -name Versatile_ARM_EXT2
+
+qemu-system-arm \
+  -M versatilepb \
+  -kernel output/images/zImage \
+  -dtb output/images/versatile-pb.dtb \
+  -append "root=/dev/nfs nfsroot=10.0.2.3:/home/br-edays/rootfs,udp rw ip=10.0.2.15::10.0.2.1:255.255.255.0 init=/sbin/init console=ttyAMA0,115200 nfsdebug" \
+  -serial stdio \
+  -name Versatile_ARM_EXT2
+
+
+
+qemu-system-arm \
+  -M versatilepb \
+  -kernel output/images/zImage \
+  -dtb output/images/versatile-pb.dtb \
+  -append "root=/dev/nfs nfsroot=10.0.2.3:/home/br-edays/rootfs rw ip=10.0.2.15::10.0.2.3:255.255.255.0 init=/sbin/init console=ttyAMA0,115200 nfsdebug" \
+  -serial stdio \
+  -netdev user,id=ethernet.0,hostfwd=tcp::2222-:22,hostfwd=tcp::2223-:69 \
+  -device rtl8139,netdev=ethernet.0 \
+  -name Versatile_ARM_EXT2
+
+
+
+sudo brctl addbr br0
+sudo ip addr flush dev ens33
+sudo brctl addif br0 ens33
+sudo tunctl -t tap0 -u `whoami`
+sudo brctl addif br0 tap0
+sudo ifconfig ens33 up
+sudo ifconfig tap0 up
+sudo ifconfig br0 up
+sudo dhclient -v br0
+
+
+
+
+
+NFS qemu on MINT19.1 use ,vers=3 does the trick :-)
+
+qemu-system-arm \
+  -M versatilepb \
+  -kernel output/images/zImage \
+  -dtb output/images/versatile-pb.dtb \
+  -append "root=/dev/nfs nfsroot=10.0.2.2:/home/br-edays/rootfs,vers=3 rw ip=dhcp init=/sbin/init console=ttyAMA0,115200" \
+  -serial stdio \
+  -netdev user,id=ethernet.0,hostfwd=tcp::2222-:22,hostfwd=tcp::2223-:69 \
+  -device rtl8139,netdev=ethernet.0 \
+  -name Versatile_ARM_EXT2
+
+
+
+tail -f /var/log/syslog
+
+
+
+Picocom
+sudo picocom -b 115200 /dev/ttyUSB0
+
+
+
+
+
+
+
+
+
 
 
 Getting Buildroot
@@ -13,6 +210,44 @@ git push -u origin master
 
 git tag -a init -m "2019.07.03 initial import"
 git push origin --tags
+
+
+
+qemu-system-arm \
+  -M versatilepb \
+  -kernel output/images/zImage \
+  -dtb output/images/versatile-pb.dtb \
+  -drive file=output/images/rootfs.ext4,if=scsi,format=raw \
+  -append "root=/dev/sda console=ttyAMA0,115200" \
+  -serial stdio \
+  -netdev user,id=ethernet.0,hostfwd=tcp::2222-:22,hostfwd=tcp::2223-:69 \
+  -device rtl8139,netdev=ethernet.0 \
+  -name Versatile_ARM_EXT2
+
+
+Legacy redirect
+qemu-system-arm \
+  -M versatilepb \
+  -kernel output/images/zImage \
+  -dtb output/images/versatile-pb.dtb \
+  -drive file=output/images/rootfs.ext4,if=scsi,format=raw \
+  -append "root=/dev/sda console=ttyAMA0,115200" \
+  -serial stdio \
+  -net nic,model=rtl8139 -net user \
+  -redir tcp:2222::22 \
+  -redir tcp:2223::69 \
+  -name Versatile_ARM_EXT2
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -304,6 +539,14 @@ git tag -a lab5_end -m "2019.07.09 end of LAB5"
 git push origin --tags
 
 
+
+git tag -a lab6_start -m "2019.07.16 ready for LAB6"
+git push origin --tags
+
+
+git commit -m "end of LAB6" .
+git tag -a lab6_end -m "2019.07.  end of LAB5"
+git push origin --tags
 
 
 
