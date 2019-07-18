@@ -655,11 +655,29 @@ make maintainer-clean
 git tag -a lab7_start -m "2019.07.18 ready for LAB7"
 git push origin --tags
 
+see http://blog.fourthbit.com/2013/06/18/creating-an-open-source-program-in-c-with-autotools-part-1-of-2
+
+autoreconf -iv
+git clean -f -d -x
+
 autoreconf -iv
 
+schenk@schenk-linux:/work/br-edays19-lab/edays-automake$ git status --ignored -sb .
+## master...origin/master
+!! Makefile.in
+!! aclocal.m4
+!! autom4te.cache/
+!! compile
+!! config.h.in
+!! configure
+!! depcomp
+!! install-sh
+!! missing
+!! src/Makefile.in
 
 
 
+git status --ignored -sb .
 
 
 
