@@ -545,8 +545,121 @@ git push origin --tags
 
 
 git commit -m "end of LAB6" .
-git tag -a lab6_end -m "2019.07.  end of LAB5"
+git tag -a lab6_end -m "2019.07.16  end of LAB6"
+git push && git push --tags
+
+
+http://blog.fourthbit.com/2013/06/18/creating-an-open-source-program-in-c-with-autotools-part-1-of-2
+
+~/br-edays19-lab/buildroot-2019.05
+
+~/br-edays19-lab/buildroot-2019.05/output/
+
+export BR_HOME=~/br-edays19-lab/buildroot-2019.05
+export BR_SYSROOT=$(BR_HOME)/host/usr/arm-buildroot-linux-uclibcgnueabi/sysroot
+
+export BR_PKG_CONFIG="$(BR_HOME)/host/usr/bin/pkg-config"
+
+export BR_PKG_CONFIG_LIBDIR=$(BR_SYSROOT)/usr/lib
+export BR_PKG_CONFIG_PATH="$(SYSROOT)/usr/lib/pkgconfig:$(SYSROOT)/usr/share/pkgconfig:$(SYSROOT)/lib/pkgconfig"
+
+
+
+
+
+
+PKG_CONFIG="$(BR_PKG_CONFIG)" PKG_CONFIG_SYSROOT_DIR="$(BR_SYSROOT)" PKG_CONFIG_LIBDIR="$(BR_PKG_CONFIG_LIBDIR)" PKG_CONFIG_PATH="$(BR_PKG_CONFIG_PATH)"
+
+
+OHUPNPPLAYER_DEF=--host=$(CONFIGURE_HOSTTARGET) --build=i686-linux --target=$(CONFIGURE_HOSTTARGET) \
+				 --with-crasher --with-ffmpegproxy --with-platinum 									\
+				 --prefix=$(OHUPNPPLAYER_DIR)/install/usr/local
+
+
+
+configure --host=arm-linux --build=i686-linux --target=arm-linux --prefix=
+
+
+
+or 
+
+
+configure --host=arm-buildroot-linux-uclibcgnueabi-
+
+.bashrc
+
+.17
+
+
+if [ -f ~/.bash_br ]; then
+    . ~/.bash_br
+fi
+
+
+~/.bash_br
+
+# M.Schenk 2019.07.17
+# included by .bashrc
+
+function set-title(){
+ if [[ -z "$ORIG" ]]; then
+    ORIG=$PS1
+  fi
+  TITLE="\[\e]2;$*\a\]"
+  PS1=${ORIG}${TITLE}
+}
+
+export BR_HOME=~/br-edays19-lab/buildroot-2019.05
+export BR_OUTPUT=$BR_HOME/output
+export BR_HOST_BIN=$BR_OUTPUT/host/bin
+export BR_SYSROOT=$BR_HOME/host/usr/arm-buildroot-linux-uclibcgnueabi/sysroot
+export BR_PKG_CONFIG=$BR_HOME/host/usr/bin/pkg-config
+export BR_PKG_CONFIG_LIBDIR=$BR_SYSROOT/usr/lib
+export BR_PKG_CONFIG_PATH=$BR_SYSROOT/usr/lib/pkgconfig:$BR_SYSROOT/usr/share/pkgconfig:$BR_SYSROOT/lib/pkgconfig
+alias cdbr='cd $BR_HOME'
+
+./share/libtool/configure --host=arm-linux --build=i686-linux --target=arm-linux
+
+
+PATH=$BR_HOST_BIN:$PATH
+
+
+make distclean
+PATH=$BR_HOST_BIN:$PATH ./configure --host=arm-linux --build=i686-linux --target=arm-linux
+PATH=$BR_HOST_BIN:$PATH make
+PATH=$BR_HOST_BIN:$PATH make install-strip DESTDIR=`pwd`/install
+
+
+make distclean
+PATH=$BR_HOST_BIN:$PATH ./configure --host=arm-buildroot-linux-uclibcgnueabi --build=i686-linux --target=arm-buildroot-linux-uclibcgnueabi
+PATH=$BR_HOST_BIN:$PATH make
+PATH=$BR_HOST_BIN:$PATH make install-strip DESTDIR=`pwd`/install
+
+make maintainer-clean
+
+	new file:   edays-automake/.gitignore
+	new file:   edays-automake/AUTHORS
+	new file:   edays-automake/COPYING
+	new file:   edays-automake/ChangeLog
+	new file:   edays-automake/INSTALL
+	new file:   edays-automake/Makefile.am
+	new file:   edays-automake/NEWS
+	new file:   edays-automake/README
+	new file:   edays-automake/configure.ac
+	new file:   edays-automake/src/Makefile.am
+	new file:   edays-automake/src/main.c
+
+
+
+
+git tag -a lab7_start -m "2019.07.18 ready for LAB7"
 git push origin --tags
+
+autoreconf -iv
+
+
+
+
 
 
 
