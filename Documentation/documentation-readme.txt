@@ -612,8 +612,8 @@ function set-title(){
 export BR_HOME=~/br-edays19-lab/buildroot-2019.05
 export BR_OUTPUT=$BR_HOME/output
 export BR_HOST_BIN=$BR_OUTPUT/host/bin
-export BR_SYSROOT=$BR_HOME/host/usr/arm-buildroot-linux-uclibcgnueabi/sysroot
-export BR_PKG_CONFIG=$BR_HOME/host/usr/bin/pkg-config
+export BR_SYSROOT=$BR_OUTPUT/host/usr/arm-buildroot-linux-uclibcgnueabi/sysroot
+export BR_PKG_CONFIG=$BR_OUTPUT/host/usr/bin/pkg-config
 export BR_PKG_CONFIG_LIBDIR=$BR_SYSROOT/usr/lib
 export BR_PKG_CONFIG_PATH=$BR_SYSROOT/usr/lib/pkgconfig:$BR_SYSROOT/usr/share/pkgconfig:$BR_SYSROOT/lib/pkgconfig
 alias cdbr='cd $BR_HOME'
@@ -658,7 +658,7 @@ git push origin --tags
 see http://blog.fourthbit.com/2013/06/18/creating-an-open-source-program-in-c-with-autotools-part-1-of-2
 
 autoreconf -iv
-git clean -f -d -x
+git clean -f -d -x .
 
 autoreconf -iv
 
@@ -678,6 +678,65 @@ schenk@schenk-linux:/work/br-edays19-lab/edays-automake$ git status --ignored -s
 
 
 git status --ignored -sb .
+
+
+
+
+PATH=$BR_HOST_BIN:$PATH PKG_CONFIG=$BR_PKG_CONFIG PKG_CONFIG_SYSROOT_DIR=$BR_SYSROOT PKG_CONFIG_LIBDIR=$BR_PKG_CONFIG_LIBDIR PKG_CONFIG_PATH=${BR_PKG_CONFIG_PATH} ./configure --host=arm-linux --build=i686-linux --target=arm-linux
+
+
+./build/libcurl-7.65.0/libcurl.pc
+#***************************************************************************
+#                                  _   _ ____  _
+#  Project                     ___| | | |  _ \| |
+#                             / __| | | | |_) | |
+#                            | (__| |_| |  _ <| |___
+#                             \___|\___/|_| \_\_____|
+#
+# Copyright (C) 1998 - 2012, Daniel Stenberg, <daniel@haxx.se>, et al.
+#
+# This software is licensed as described in the file COPYING, which
+# you should have received as part of this distribution. The terms
+# are also available at https://curl.haxx.se/docs/copyright.html.
+#
+# You may opt to use, copy, modify, merge, publish, distribute and/or sell
+# copies of the Software, and permit persons to whom the Software is
+# furnished to do so, under the terms of the COPYING file.
+#
+# This software is distributed on an "AS IS" basis, WITHOUT WARRANTY OF ANY
+# KIND, either express or implied.
+#
+###########################################################################
+
+# This should most probably benefit from getting a "Requires:" field added
+# dynamically by configure.
+#
+prefix=/usr
+exec_prefix=/usr
+libdir=${exec_prefix}/lib
+includedir=${prefix}/include
+supported_protocols="DICT FILE FTP GOPHER HTTP IMAP POP3 RTSP SMTP TELNET TFTP"
+supported_features="IPv6 UnixSockets AsynchDNS"
+
+Name: libcurl
+URL: https://curl.haxx.se/
+Description: Library to transfer files with ftp, http, etc.
+Version: 7.65.0
+Libs: -L${libdir} -lcurl
+Libs.private: 
+Cflags: -I${includedir} 
+
+
+
+
+PATH=$BR_HOST_BIN:$PATH PKG_CONFIG=$BR_PKG_CONFIG PKG_CONFIG_SYSROOT_DIR=$BR_SYSROOT PKG_CONFIG_LIBDIR=$BR_PKG_CONFIG_LIBDIR PKG_CONFIG_PATH=$BR_PKG_CONFIG_PATH ./configure --host=arm-linux --build=i686-linux --target=arm-linux
+
+
+
+schenk@schenk-linux:/work/br-edays19-lab/edays-automake$ PKG_CONFIG_PATH=/work/br-edays19-lab/buildroot-2019.05/output/host/usr/arm-buildroot-linux-uclibcgnueabi/sysroot/usr/lib/pkgconfig /work/br-edays19-lab/buildroot-2019.05/output/host/usr/bin/pkg-config libcurl -cflags
+-I/work/br-edays19-lab/buildroot-2019.05/output/host/usr/bin/../arm-buildroot-linux-uclibcgnueabi/sysroot/usr/include 
+
+
 
 
 

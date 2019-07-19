@@ -12,6 +12,10 @@ AC_PROG_CPP
 AC_LANG([C])
 
 # Checks for libraries.
+dnl checking libcurl
+PKG_CHECK_MODULES(CURL, [libcurl],
+		  [AC_DEFINE([HAVE_LIBCURL], [1], [Using Libcurl ])],
+		  AC_MSG_WARN([libcurl not found. Not using web interaction.]))
 
 # Checks for header files.
 AC_HEADER_STDC
